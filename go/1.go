@@ -1,16 +1,51 @@
-/*********************************
- * 1.go: Primeiro programa em Go *
- *********************************/
- package main  // Nome do pacote que está sendo criado, 
-               // equivale ao nome do programa.
-               
-import "fmt"   // Importação de bibliotecas. Equivale ao "#include < >" em C++.
+package main
 
-func main() {  // Função principal. A indentação neste formato é obrigatória e 
-               // deve ser seguida.
-   //Comandos 
-   fmt.Print("Bem Vindos ao GO!", 123)
-   fmt.Println("\nBem Vindos ao GO!", 123)
-   fmt.Printf("Bem Vindos ao GO! %d\n", 123)
+import (
+	"fmt"
+	"os"
+)
 
+var (
+	n, fst, teste, val int
+	s rune
+)
+
+func main() {
+	input, err := os.Open("calcula.in")
+	if err != nil {
+		panic(err)
+	}
+
+	defer input.Close()
+
+	output, err := os.Create("calcula.out")
+	if err != nil {
+		panic(err)
+	}
+
+	defer output.Close()
+
+	for {
+		fmt.Fscanf(input, "%d\n", &n)
+		if n == 0 {
+			break
+		}
+
+		fmt.Fscanf(input, "%d%c", &fst, &s)
+		for i := 1; i < n; i++ {
+			aux := s
+			fmt.Fscanf(input, "%d%c", &val, &s)
+			switch aux {
+			case '+':
+				fst += val
+			case '-':
+				fst -= val
+			case '\n':
+				i = n
+			}
+		}
+		teste++
+		fmt.Fprintf(output, "Teste %d\n%d\n\n", teste, fst)
+		
+	}
 }
